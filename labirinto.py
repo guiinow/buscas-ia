@@ -53,6 +53,16 @@ class FilaFronteira(PilhaFronteira):
             self.fronteira = self.fronteira[1:]
             return no
 
+#Gerencia fronteira com base na func. de avaliacao do A*
+class Fronteira():
+    #Criterio de remoção de nó  da fronteira e visitao é pelo menos valor de funcAvaliacao
+    def __init__(self):
+        pass
+    def calcFuncAvaliacao(self):
+        g, w, h = 1, 1, 1
+        funcAvaliacao = g+(w*h)
+        
+
 # Classe do Problema de Busca
 class Labirinto():
 
@@ -255,3 +265,5 @@ print("Estados Explorados:", m.num_explored)
 print("Solução: ")
 m.print()
 m.output_image("labirinto.png", show_explored=True)
+
+# FronteiraAEstrela()
