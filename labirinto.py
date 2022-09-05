@@ -1,3 +1,5 @@
+from scipy.spatial.distance import cityblock
+
 # ----------------------------------
 # Exemplo para Busca Não -Informada
 # ----------------------------------
@@ -7,10 +9,11 @@ import time
 
 # Classe No com 3 atributos: estado, pai e ação
 class No():
-    def __init__(self, estado, pai, acao):
+    def __init__(self, estado, pai, acao, heuristica):
         self.estado = estado
         self.pai = pai
         self.acao = acao
+        self.heuristica = heuristica
 
 # Classe para tratar Nós Fronteira
 # Deep First Search (DFS)
@@ -53,15 +56,24 @@ class FilaFronteira(PilhaFronteira):
             self.fronteira = self.fronteira[1:]
             return no
 
-#Gerencia fronteira com base na func. de avaliacao do A*
-class Fronteira():
-    #Criterio de remoção de nó  da fronteira e visitao é pelo menos valor de funcAvaliacao
+class buscaAEstrela(No):
     def __init__(self):
         pass
-    def calcFuncAvaliacao(self):
-        g, w, h = 1, 1, 1
-        funcAvaliacao = g+(w*h)
+
+    # g(n)
+    def custoAtual(no):
+
+        while no.pai != None:
+            custo += 1
+            no = no.pai
+        return custo
         
+    def calculaFuncaoAvaliacao(custoAtual, heuristica):
+        No.heuristica = cityblock(No.estado, destino=No)
+        return custoAtual + No.heuristica
+
+        
+    
 
 # Classe do Problema de Busca
 class Labirinto():
