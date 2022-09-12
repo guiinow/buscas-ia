@@ -9,10 +9,11 @@ import time
 
 # Classe No com 3 atributos: estado, pai e ação
 class No():
-    def __init__(self, estado, pai, acao, heuristica):
+    def __init__(self, estado, pai, acao, custo, heuristica):
         self.estado = estado
         self.pai = pai
         self.acao = acao
+        self.custo = custo
         self.heuristica = heuristica
 
 # Classe para tratar Nós Fronteira
@@ -56,22 +57,22 @@ class FilaFronteira(PilhaFronteira):
             self.fronteira = self.fronteira[1:]
             return no
 
-class buscaAEstrela(No):
-    def __init__(self):
-        pass
+class ListaFronteira(PilhaFronteira):
 
-    # g(n)
-    def custoAtual(no):
-
-        while no.pai != None:
-            custo += 1
-            no = no.pai
-        return custo
-        
-    def calculaFuncaoAvaliacao(custoAtual, heuristica):
-        No.heuristica = cityblock(No.estado, destino=No)
-        return custoAtual + No.heuristica
-
+    # Remove estado da Fronteira do tipo Fila
+    def remove(self):
+        if self.empty():
+            raise Exception("Fronteira vazia")
+        else:
+            menorNo = self.fronteira[0]
+            aux = menorNo.custo + menorNo.heuristica
+            for no in self.fronteira:
+                if(no.custo + no.heuristica < aux):
+                    aux = no.custo + no.heuristica
+                    menorNo = no
+                    
+            self.fronteira.remove(menorNo)
+            return menorNo
         
     
 
