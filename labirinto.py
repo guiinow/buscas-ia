@@ -157,7 +157,7 @@ class Labirinto():
 
 
     # Invoca o método solve() para encontrar a solução 
-    def solve(self):
+    def solve(self, metodo):
         """Encontrar uma solução para labirinto, se existe."""
 
         # Acompanhar o número de estados explorados
@@ -273,8 +273,8 @@ class Labirinto():
 # Programa Principal 
 # ----------------------
 
-if len(sys.argv) != 2:
-    sys.exit("Uso: python3 labirinto.py labirinto.txt (P ou F ou L")
+if len(sys.argv) != 3:
+    sys.exit("Uso: python3 labirinto.py labirinto.txt (P ou F ou L)")
 
 m = Labirinto(sys.argv[1])
 metodo = sys.argv[2]
