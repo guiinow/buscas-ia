@@ -164,12 +164,21 @@ class Labirinto():
         self.num_explored = 0
 
         # Inicializa a fronteira apenas para o posição inicial
-        inicio = No(estado=self.inicio, pai=None, acao=None)
-        fronteira = PilhaFronteira() #Pilha -> Profundidade
+        inicio = No(estado=self.inicio, pai=None, acao=None, custo =0, heuristica = cityblock(self.inicio, self.objetivo))
+        if(metodo == "P" || metodo == "p"):
+            fronteira = PilhaFronteira() #Pilha -> Profundidade
+        elif(metodo == "F" || metodo == "f"):
+            fronteira = FilaFronteira() #Fila -> Largura
+        elif(metodo == "L" || metodo == "l"):
+            fronteira = ListaFronteira() # Lista -> A*
+        else: 
+            raise Exception("Método de busca inválido, as opções são: P, F ou L")
+
         fronteira.add(inicio)
 
         # Inicializa um conjunto vazio de estados não explorados
         self.explored = set()
+        self.listaExplorados = []
 
         # Mantem laço até encontrar solução
         while True:
@@ -186,24 +195,28 @@ class Labirinto():
             if no.estado == self.objetivo:
                 acoes = []
                 celulas = []
+                heuristica = []
                 while no.pai is not None:
                     acoes.append(no.acao)
                     celulas.append(no.estado)
+                    heuristica.append((no.estado, no.heuristica, no.custo))
                     no = no.pai
                 acoes.reverse()
                 celulas.reverse()
-                self.solucao = (acoes, celulas)
+                heuristica.reverse()
+                self.solucao = (acoes, celulas, heuristica)
                 return
 
             # Marca nó como explorado
             self.explored.add(no.estado)
+            self.listaExplorados.append((no.estado, no.heuristica, no.custo))
 
             # Adiciona vizinhos a fronteira
             for acao, estado in self.vizinhos(no.estado):
                 if not fronteira.contem_estado(estado) and estado not in self.explored:
-                    filho = No(estado=estado, pai=no, acao=acao)
+                    filho = No(estado=estado, pai=no, acao=acao, custo=(no.custo+1), heuristica=distance.cityblock(estado, self.objetivo))
                     fronteira.add(filho)
-
+                    
     # Imprime o labirinto com os estados explorados
     def output_image(self, filename, show_solution=True, show_explored=False):
         from PIL import Image, ImageDraw
