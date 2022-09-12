@@ -165,11 +165,11 @@ class Labirinto():
 
         # Inicializa a fronteira apenas para o posição inicial
         inicio = No(estado=self.inicio, pai=None, acao=None, custo =0, heuristica = cityblock(self.inicio, self.objetivo))
-        if(metodo == "P" || metodo == "p"):
+        if(metodo == "P" or metodo == "p"):
             fronteira = PilhaFronteira() #Pilha -> Profundidade
-        elif(metodo == "F" || metodo == "f"):
+        elif(metodo == "F" or metodo == "f"):
             fronteira = FilaFronteira() #Fila -> Largura
-        elif(metodo == "L" || metodo == "l"):
+        elif(metodo == "L" or metodo == "l"):
             fronteira = ListaFronteira() # Lista -> A*
         else: 
             raise Exception("Método de busca inválido, as opções são: P, F ou L")
@@ -214,9 +214,9 @@ class Labirinto():
             # Adiciona vizinhos a fronteira
             for acao, estado in self.vizinhos(no.estado):
                 if not fronteira.contem_estado(estado) and estado not in self.explored:
-                    filho = No(estado=estado, pai=no, acao=acao, custo=(no.custo+1), heuristica=distance.cityblock(estado, self.objetivo))
+                    filho = No(estado=estado, pai=no, acao=acao, custo=(no.custo+1), heuristica=cityblock(estado, self.objetivo))
                     fronteira.add(filho)
-                    
+
     # Imprime o labirinto com os estados explorados
     def output_image(self, filename, show_solution=True, show_explored=False):
         from PIL import Image, ImageDraw
@@ -274,15 +274,16 @@ class Labirinto():
 # ----------------------
 
 if len(sys.argv) != 2:
-    sys.exit("Uso: python labirinto.py labirinto.txt")
+    sys.exit("Uso: python3 labirinto.py labirinto.txt (P ou F ou L")
 
 m = Labirinto(sys.argv[1])
+metodo = sys.argv[2]
 print("Labirinto: ")
 m.print()
 print("Solucionando...")
 
 t1 = time.time()
-m.solve()
+m.solve(metodo)
 t2 = time.time()
 tempo_execucao = t2 - t1 
 print("Tempo de Execução: ", tempo_execucao)
@@ -292,4 +293,3 @@ print("Solução: ")
 m.print()
 m.output_image("labirinto.png", show_explored=True)
 
-# FronteiraAEstrela()
